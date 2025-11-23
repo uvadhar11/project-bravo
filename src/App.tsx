@@ -1,4 +1,16 @@
 import { useState } from "react";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import {
+  Menu,
+  Home as HomeIcon,
+  Info,
+  Award,
+  Mail,
+  Wallet,
+  BarChart3,
+  Shield,
+} from "lucide-react";
+
 import { Home } from "./components/Home";
 import { About } from "./components/About";
 import { Credits } from "./components/Credits";
@@ -7,44 +19,22 @@ import { ExpenseLogging } from "./components/ExpenseLogging";
 import { ExpenseReport } from "./components/ExpenseReport";
 import { AdminWindow } from "./components/AdminWindow";
 import { Button } from "./components/ui/button";
-import { Menu, Home as HomeIcon, Info, Award, Mail, Wallet, BarChart3, Shield } from "lucide-react";
-
-type Page = "home" | "about" | "credits" | "contact" | "expenses" | "reports" | "admin";
+import NotFound from "./components/NotFound";
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<Page>("home");
+  const navigate = useNavigate(); // navigation function
+  const location = useLocation(); // gives url
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navigation = [
-    { id: "home" as Page, label: "Home", icon: HomeIcon },
-    { id: "expenses" as Page, label: "Expense Logging", icon: Wallet },
-    { id: "reports" as Page, label: "Expense Report", icon: BarChart3 },
-    { id: "admin" as Page, label: "Admin", icon: Shield },
-    { id: "about" as Page, label: "About", icon: Info },
-    { id: "credits" as Page, label: "Credits", icon: Award },
-    { id: "contact" as Page, label: "Contact", icon: Mail },
+    { path: "/", label: "Home", icon: HomeIcon },
+    { path: "/expenses", label: "Expense Logging", icon: Wallet },
+    { path: "/reports", label: "Expense Report", icon: BarChart3 },
+    { path: "/admin", label: "Admin", icon: Shield },
+    { path: "/about", label: "About", icon: Info },
+    { path: "/credits", label: "Credits", icon: Award },
+    { path: "/contact", label: "Contact", icon: Mail },
   ];
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case "home":
-        return <Home />;
-      case "about":
-        return <About />;
-      case "credits":
-        return <Credits />;
-      case "contact":
-        return <Contact />;
-      case "expenses":
-        return <ExpenseLogging />;
-      case "reports":
-        return <ExpenseReport />;
-      case "admin":
-        return <AdminWindow />;
-      default:
-        return <Home />;
-    }
-  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -56,16 +46,18 @@ export default function App() {
               <Wallet className="w-8 h-8 text-blue-600" />
               <h1 className="text-slate-900">Expense Tracker</h1>
             </div>
-            
+
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-2">
               {navigation.map((item) => {
                 const Icon = item.icon;
+                // determine if the current url path matches the item's path for styling
+                const isActive = location.pathname === item.path;
                 return (
                   <Button
-                    key={item.id}
-                    variant={currentPage === item.id ? "default" : "ghost"}
-                    onClick={() => setCurrentPage(item.id)}
+                    key={item.path}
+                    variant={isActive ? "default" : "ghost"}
+                    onClick={() => navigate(item.path)}
                     className="gap-2"
                   >
                     <Icon className="w-4 h-4" />
@@ -91,12 +83,13 @@ export default function App() {
             <div className="md:hidden pb-4 space-y-1">
               {navigation.map((item) => {
                 const Icon = item.icon;
+                const isActive = location.pathname === item.path;
                 return (
                   <Button
-                    key={item.id}
-                    variant={currentPage === item.id ? "default" : "ghost"}
+                    key={item.path}
+                    variant={isActive ? "default" : "ghost"}
                     onClick={() => {
-                      setCurrentPage(item.id);
+                      navigate(item.path);
                       setIsMenuOpen(false);
                     }}
                     className="w-full justify-start gap-2"
@@ -113,7 +106,19 @@ export default function App() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {renderPage()}
+        {/* define routes */}
+        <Routes>
+          {/* root route "/" */}
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/credits" element={<Credits />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/expenses" element={<ExpenseLogging />} />
+          <Route path="/reports" element={<ExpenseReport />} />
+          <Route path="/admin" element={<AdminWindow />} />
+          {/* error route: "*" */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </main>
     </div>
   );
