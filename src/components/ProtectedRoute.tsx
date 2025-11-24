@@ -1,12 +1,10 @@
-// import { useAuth } from "../context/AuthContext";
 import { Navigate, Outlet } from "react-router-dom";
+import { useAuth } from "../features/auth/AuthContext";
 
 export default function ProtectedRoute() {
-  //   const { user, loading } = useAuth();
-  const user = true;
-  const loading = false;
+  const { user, loading } = useAuth();
 
-  // 1. Show nothing (or a spinner) while checking authentication status
+  // show spinner if checking auth status
   if (loading) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -15,11 +13,11 @@ export default function ProtectedRoute() {
     );
   }
 
-  // 2. If not authenticated, redirect to Login
+  // if not authenticated, redirect to login
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  // 3. If authenticated, render the child routes
+  // render child routes if authenticated
   return <Outlet />;
 }

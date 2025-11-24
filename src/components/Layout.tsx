@@ -13,18 +13,17 @@ import {
   LogOut,
 } from "lucide-react";
 import { Footer } from "./ui/Footer";
-// import { useAuth } from "../context/AuthContext";
-// import { supabase } from "../lib/supabase";
+import { supabase } from "../lib/supabase";
+import { useAuth } from "../features/auth/AuthContext";
 
 export default function Layout() {
   const location = useLocation(); // get url
   const navigate = useNavigate(); // react router navigation for url
-  const user = true;
-  // const { user } = useAuth(); // get user with custom auth hook to give user
+  const { user } = useAuth(); // get user with custom auth hook to give user
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleLogout = async () => {
-    // await supabase.auth.signOut();
+    await supabase.auth.signOut();
     navigate("/login");
   };
 
