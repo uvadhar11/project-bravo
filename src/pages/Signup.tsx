@@ -75,14 +75,14 @@ export function Signup() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
-            <Button className="w-full" type="submit" disabled={loading}>
+            <Button className="w-full mt-4" type="submit" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Sign Up
             </Button>
             <div className="text-sm text-center text-slate-600">
               Already have an account?{" "}
               <Link to="/login" className="text-blue-600 hover:underline">
-                Sign in
+                Log in
               </Link>
             </div>
           </CardFooter>

@@ -39,9 +39,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
+  // while checking user session, show loading screen to prevent the flash of white screen for a second
+  if (loading) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <AuthContext.Provider value={{ session, user, loading }}>
-      {!loading && children}
+      {!loading && children}{" "}
+      {/* only render children when not loading. prevents flash of unauthenticated content */}
     </AuthContext.Provider>
   );
 };
