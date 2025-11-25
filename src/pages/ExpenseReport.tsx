@@ -21,8 +21,15 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { TrendingUp, TrendingDown, DollarSign, Wallet } from "lucide-react";
+import {
+  TrendingUp,
+  TrendingDown,
+  DollarSign,
+  Wallet,
+  Loader2,
+} from "lucide-react";
 import { useState } from "react";
+import { useReports } from "..//features/reports/useReports";
 
 const categoryData = [
   { name: "Groceries", value: 1400, color: "#3b82f6" },
@@ -46,11 +53,19 @@ const monthlyData = [
 ];
 
 export function ExpenseReport() {
-  const [selectedMonth, setSelectedMonth] = useState("October 2025");
+  const [selectedMonth, setSelectedMonth] = useState("all"); // October 2025
+  const { monthlyData, categoryData, summary, loading } = useReports();
 
-  const totalIncome = 5000;
-  const totalExpenses = 3550;
-  const balance = totalIncome - totalExpenses;
+  // const totalIncome = 5000;
+  // const totalExpenses = 3550;
+  // const balance = totalIncome - totalExpenses;
+
+  if (loading)
+    return (
+      <div className="flex justify-center p-12">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
 
   return (
     <div className="space-y-6">
@@ -82,7 +97,7 @@ export function ExpenseReport() {
               <TrendingUp className="w-5 h-5 text-green-600" />
             </div>
           </div>
-          <p className="text-slate-900">${totalIncome.toFixed(2)}</p>
+          <p className="text-slate-900">${summary.income.toFixed(2)}</p>
         </Card>
 
         <Card className="p-6 space-y-2">
@@ -92,7 +107,7 @@ export function ExpenseReport() {
               <TrendingDown className="w-5 h-5 text-red-600" />
             </div>
           </div>
-          <p className="text-slate-900">${totalExpenses.toFixed(2)}</p>
+          <p className="text-slate-900">${summary.expenses.toFixed(2)}</p>
         </Card>
 
         <Card className="p-6 space-y-2">
@@ -102,7 +117,7 @@ export function ExpenseReport() {
               <DollarSign className="w-5 h-5 text-blue-600" />
             </div>
           </div>
-          <p className="text-slate-900">${balance.toFixed(2)}</p>
+          <p className="text-slate-900">${summary.balance.toFixed(2)}</p>
         </Card>
 
         <Card className="p-6 space-y-2">
@@ -112,9 +127,7 @@ export function ExpenseReport() {
               <Wallet className="w-5 h-5 text-purple-600" />
             </div>
           </div>
-          <p className="text-slate-900">
-            {((balance / totalIncome) * 100).toFixed(1)}%
-          </p>
+          <p className="text-slate-900">{summary.savingsRate.toFixed(1)}%</p>
         </Card>
       </div>
 
@@ -203,7 +216,10 @@ export function ExpenseReport() {
               </div>
               <div className="flex items-center gap-4">
                 <span className="text-slate-600">
-                  {((category.value / totalExpenses) * 100).toFixed(1)}%
+                  {summary.expenses > 0
+                    ? ((category.value / summary.expenses) * 100).toFixed(1)
+                    : "0.0"}
+                  %{" "}
                 </span>
                 <span className="text-slate-900">
                   ${category.value.toFixed(2)}
@@ -211,6 +227,13 @@ export function ExpenseReport() {
               </div>
             </div>
           ))}
+
+          {/* Empty state if no data */}
+          {categoryData.length === 0 && (
+            <p className="text-center text-slate-500 text-sm py-4">
+              No expense data available.
+            </p>
+          )}
         </div>
       </Card>
     </div>

@@ -26,7 +26,7 @@ import {
   DialogTrigger,
 } from "../components/ui/dialog";
 import { Plus, Pencil, Trash2 } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner";
 
 type EntryType = "income" | "expense";
 type TimePeriod = "daily" | "weekly" | "monthly" | "yearly";
