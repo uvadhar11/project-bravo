@@ -25,108 +25,79 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../components/ui/dialog";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useTransactions } from "../features/transactions/useTransactions";
 
 type EntryType = "income" | "expense";
 type TimePeriod = "daily" | "weekly" | "monthly" | "yearly";
 
-interface Entry {
-  id: string;
-  type: EntryType;
-  category: string;
-  amount: number;
-  description: string;
-  date: string;
-  period: TimePeriod;
-}
-
-const mockEntries: Entry[] = [
-  {
-    id: "1",
-    type: "income",
-    category: "Salary",
-    amount: 5000,
-    description: "Monthly salary",
-    date: "2025-10-01",
-    period: "monthly",
-  },
-  {
-    id: "2",
-    type: "expense",
-    category: "Groceries",
-    amount: 350,
-    description: "Weekly groceries",
-    date: "2025-10-15",
-    period: "weekly",
-  },
-  {
-    id: "3",
-    type: "expense",
-    category: "Rent",
-    amount: 1200,
-    description: "Monthly rent",
-    date: "2025-10-01",
-    period: "monthly",
-  },
-  {
-    id: "4",
-    type: "expense",
-    category: "Transportation",
-    amount: 50,
-    description: "Gas",
-    date: "2025-10-20",
-    period: "weekly",
-  },
-];
-
 export function ExpenseLogging() {
-  const [entries, setEntries] = useState<Entry[]>(mockEntries);
+  const {
+    transactions,
+    isLoading,
+    createTransaction,
+    // updateTransaction,
+    deleteTransaction,
+  } = useTransactions();
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingEntry, setEditingEntry] = useState<Entry | null>(null);
+  const [editingEntry, setEditingEntry] = useState<any>(null);
+
   const [formData, setFormData] = useState({
     type: "expense" as EntryType,
     category: "",
     amount: "",
-    description: "",
+    name: "",
     date: new Date().toISOString().split("T")[0],
-    period: "monthly" as TimePeriod,
+    period: "Monthly" as TimePeriod,
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    const numericAmount = parseFloat(formData.amount);
+    // Ensure expenses are negative, income is positive
+    const finalAmount =
+      formData.type === "expense"
+        ? -Math.abs(numericAmount)
+        : Math.abs(numericAmount);
+
     if (editingEntry) {
       // Update existing entry
-      setEntries(
-        entries.map((entry) =>
-          entry.id === editingEntry.id
-            ? { ...entry, ...formData, amount: parseFloat(formData.amount) }
-            : entry
-        )
-      );
-      toast.success("Entry updated successfully!");
+      toast.info("Edit functionality coming soon!");
+      // You would call updateTransaction.mutate here
     } else {
       // Add new entry
-      const newEntry: Entry = {
-        id: Date.now().toString(),
-        ...formData,
-        amount: parseFloat(formData.amount),
-      };
-      setEntries([...entries, newEntry]);
-      toast.success("Entry added successfully!");
+      createTransaction.mutate(
+        {
+          name: formData.name,
+          amount: finalAmount,
+          category: formData.category,
+          date: formData.date,
+          type: formData.type, // Ensure DB column allows 'income'/'expense' strings
+          period: formData.period,
+        },
+        {
+          onSuccess: () => {
+            toast.success("Entry added successfully!");
+            resetForm();
+          },
+          onError: (err) => {
+            toast.error(`Error: ${err.message}`);
+          },
+        }
+      );
     }
-
-    resetForm();
   };
 
-  const handleEdit = (entry: Entry) => {
+  const handleEdit = (entry: any) => {
     setEditingEntry(entry);
     setFormData({
       type: entry.type,
       category: entry.category,
-      amount: entry.amount.toString(),
-      description: entry.description,
+      amount: Math.abs(entry.amount).toString(),
+      name: entry.name,
       date: entry.date,
       period: entry.period,
     });
@@ -134,8 +105,11 @@ export function ExpenseLogging() {
   };
 
   const handleDelete = (id: string) => {
-    setEntries(entries.filter((entry) => entry.id !== id));
-    toast.success("Entry deleted successfully!");
+    if (confirm("Are you sure you want to delete this entry?")) {
+      deleteTransaction.mutate(id, {
+        onSuccess: () => toast.success("Entry deleted successfully!"),
+      });
+    }
   };
 
   const resetForm = () => {
@@ -143,13 +117,20 @@ export function ExpenseLogging() {
       type: "expense",
       category: "",
       amount: "",
-      description: "",
+      name: "",
       date: new Date().toISOString().split("T")[0],
       period: "monthly",
     });
     setEditingEntry(null);
     setIsDialogOpen(false);
   };
+
+  if (isLoading)
+    return (
+      <div className="flex justify-center p-10">
+        <Loader2 className="animate-spin" />
+      </div>
+    );
 
   return (
     <div className="space-y-6">
@@ -242,6 +223,7 @@ export function ExpenseLogging() {
                     <SelectItem value="weekly">Weekly</SelectItem>
                     <SelectItem value="monthly">Monthly</SelectItem>
                     <SelectItem value="yearly">Yearly</SelectItem>
+                    <SelectItem value="one-time">One-time</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -263,9 +245,9 @@ export function ExpenseLogging() {
                 <Label htmlFor="description">Description</Label>
                 <Input
                   id="description"
-                  value={formData.description}
+                  value={formData.name}
                   onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
+                    setFormData({ ...formData, name: e.target.value })
                   }
                   placeholder="Brief description"
                   required
@@ -299,12 +281,12 @@ export function ExpenseLogging() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {entries.map((entry) => (
+            {transactions?.map((entry) => (
               <TableRow key={entry.id}>
                 <TableCell>{entry.date}</TableCell>
                 <TableCell>
                   <span
-                    className={`inline-flex px-2 py-1 rounded ${
+                    className={`inline-flex px-2 py-1 rounded capitalize ${
                       entry.type === "income"
                         ? "bg-green-100 text-green-700"
                         : "bg-red-100 text-red-700"
@@ -314,10 +296,10 @@ export function ExpenseLogging() {
                   </span>
                 </TableCell>
                 <TableCell>{entry.category}</TableCell>
-                <TableCell>{entry.description}</TableCell>
+                <TableCell>{entry.name}</TableCell>
                 <TableCell className="capitalize">{entry.period}</TableCell>
                 <TableCell className="text-right">
-                  ${entry.amount.toFixed(2)}
+                  ${Math.abs(entry.amount).toFixed(2)}
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
