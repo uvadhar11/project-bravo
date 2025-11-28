@@ -15,12 +15,16 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { ScrollToTop } from "./components/ui/ScrollToTop";
 import { SetPassword } from "./pages/SetPassword";
 import { Onboarding } from "./pages/Onboarding";
+import { Toaster } from "sonner";
 
 export default function App() {
   return (
     <>
       {/* scroll to top utility to force scroll to top on move to a new page */}
       <ScrollToTop />
+
+      {/* toast messages */}
+      <Toaster />
 
       <Routes>
         {/* Public Routes (no layout or auth) */}
