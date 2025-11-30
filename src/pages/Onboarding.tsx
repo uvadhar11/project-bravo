@@ -34,7 +34,7 @@ export function Onboarding() {
       // 1. Create the Organization
       const { data: org, error: orgError } = await supabase
         .from("organizations")
-        .insert({ name: orgName })
+        .insert({ name: orgName, owner_id: user.id })
         .select()
         .single();
 
@@ -56,6 +56,36 @@ export function Onboarding() {
       window.location.href = "/expenses";
     } catch (error: any) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // OPTION B: Join Existing Organization
+  const handleJoinOrg = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!joinCode.trim()) return toast.error("Please enter a join code");
+
+    setLoading(true);
+
+    try {
+      // Call the secure Database Function (RPC)
+      const { error } = await supabase.rpc("join_organization", {
+        join_code_input: joinCode.trim(),
+      });
+
+      if (error) throw error;
+
+      toast.success("Successfully joined the organization!");
+      window.location.href = "/expenses";
+    } catch (error: any) {
+      console.error(error);
+      // Friendly error message if code is wrong
+      toast.error(
+        error.message === "Invalid join code"
+          ? "Invalid join code. Please try again."
+          : error.message
+      );
     } finally {
       setLoading(false);
     }
@@ -106,19 +136,25 @@ export function Onboarding() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
+            <form onSubmit={handleJoinOrg} className="space-y-4">
               <div className="space-y-2">
                 <Label>Join Code</Label>
                 <Input
                   placeholder="e.g. 8f3a2b1c"
                   value={joinCode}
                   onChange={(e) => setJoinCode(e.target.value)}
+                  required
                 />
               </div>
-              <Button variant="outline" className="w-full" disabled>
-                Join Organization (Coming Soon)
+              <Button
+                variant="outline"
+                type="submit"
+                className="w-full"
+                disabled={loading}
+              >
+                {loading ? "Joining..." : "Join Organization"}
               </Button>
-            </div>
+            </form>
           </CardContent>
         </Card>
       </div>

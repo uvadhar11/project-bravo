@@ -27,29 +27,53 @@ export function Signup() {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signUp({
+      const { data, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          // This passes the name to Supabase Auth.
-          // A database trigger is needed to copy this to the 'profiles' table.
           data: {
             full_name: fullName,
           },
         },
       });
 
-      if (error) throw error;
+      if (authError) throw authError;
 
-      // Check if email confirmation is required
-      if (data.session) {
-        toast.success("Account created successfully!");
-        navigate("/");
-      } else {
-        toast.success("Account created! Please check your email to confirm.");
-        navigate("/login");
+      // create profile row (prev. had db trigger). if user exists (from above signUp) then add profile entry
+      if (data.user) {
+        // Check if profile exists first to avoid duplicate errors
+        const { data: existingProfile } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("id", data.user.id)
+          .single();
+
+        // if an existing profile doesn't exist, then create one
+        if (!existingProfile) {
+          const { error: profileError } = await supabase
+            .from("profiles")
+            .insert({
+              id: data.user.id,
+              email: email,
+              full_name: fullName,
+              role: "member",
+              status: "active",
+            });
+
+          if (profileError) {
+            console.error("Profile creation error:", profileError);
+            throw new Error(
+              "Failed to create user profile: " + profileError.message
+            );
+          }
+        }
       }
+
+      // success notification
+      toast.success("Account created successfully!");
+      navigate("/expenses");
     } catch (error: any) {
+      console.error("Signup error:", error);
       toast.error(error.message);
     } finally {
       setLoading(false);
