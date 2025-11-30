@@ -5,12 +5,7 @@ const contributions = [
   {
     name: "Umang Vadhar",
     role: "Lead Programmer",
-    contributions: [
-      "x",
-      "x",
-      "x",
-      "x",
-    ],
+    contributions: ["x", "x", "x", "x"],
   },
   {
     name: "Alex Barnett",
@@ -21,7 +16,7 @@ const contributions = [
       "Track Development Progress – Monitor code progress, testing, and integration; resolve blockers and manage risks.",
       "Facilitate Communication – Coordinate between developers, designers, and QA to ensure everyone stays aligned. ",
     ],
-	image: "/team/alex.png",
+    image: "/team/alex.png",
   },
 
   {
@@ -33,7 +28,7 @@ const contributions = [
       "Reviewed all project documentation before submission to ensure accuracy and completeness.",
       "Assisted in testing and refining the website to ensure proper functionality and usability.",
     ],
-	image: "/team/ben.png",
+    image: "/team/ben.png",
   },
   {
     name: "Derian Godoy-Chavez",
@@ -44,7 +39,7 @@ const contributions = [
       "Helped setup the database",
       "Reviewed documentation to ensure accuracy",
     ],
-	image: "/team/derian.png",
+    image: "/team/derian.png",
   },
   {
     name: "Mukhammad Abdusamadov",
@@ -55,7 +50,7 @@ const contributions = [
       "Updated about/credits page",
       "Tested the website to discover edge cases",
     ],
-	image: "/team/mukhammad.jpg",
+    image: "/team/mukhammad.jpg",
   },
   {
     name: "Mohsin Mohammad",
@@ -66,7 +61,7 @@ const contributions = [
       "Created the zoom meetings and participated in discussion by asking questions.",
       "Always asked Derian if there was more stuff I could do to help in order to contribute.",
     ],
-	image: "/team/mohsin.png",
+    image: "/team/mohsin.png",
   },
   {
     name: "Ronald Salas",
@@ -76,7 +71,7 @@ const contributions = [
       "Designed and maintained Algorithm diagrams",
       "Designed and maintained Use-case diagrams",
     ],
-	image: "/team/ronald.jpg",
+    image: "/team/ronald.jpg",
   },
   {
     name: "Sparsh Saraiya",
@@ -86,7 +81,7 @@ const contributions = [
       "Oversaw the planning, writing, and refinement of the project’s documentation as a whole.",
       "Developed most of the test cases to ensure full compliance with system requirements.",
     ],
-	image: "/team/sparsh.png",
+    image: "/team/sparsh.png",
   },
 ];
 
@@ -94,12 +89,7 @@ export function Credits() {
   return (
     <div className="space-y-8">
       <div className="text-center space-y-4">
-        <h1 className="text-slate-900">Project Credits</h1>
-        <p className="text-slate-600 max-w-2xl mx-auto">
-          Recognizing the individual contributions that made this project
-          possible. Each team member played a crucial role in bringing Expense
-          Tracker to life.
-        </p>
+        <h1 className="text-slate-900 text-3xl font-bold">Credits</h1>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">
@@ -107,8 +97,8 @@ export function Credits() {
           <Card key={index} className="p-6 space-y-4">
             <div className="flex items-start gap-4">
               <div className="w-20 h-20 rounded-full overflow-hidden flex-shrink-0">
-		<img
-		  src={person.image}
+                <img
+                  src={person.image}
                   alt={person.name}
                   className="w-full h-full object-cover"
                 />

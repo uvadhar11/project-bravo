@@ -3,27 +3,33 @@ import { Badge } from "../components/ui/badge";
 import { GraduationCap, Briefcase, Code } from "lucide-react";
 
 const teamMembers = [
-    {
+  {
     name: "Umang Vadhar",
     role: "Lead Programmer",
     education: "x",
     skills: ["x", "x", "x", "x"],
-    experience:
-      "x",
+    experience: "x",
   },
   {
     name: "Alex Barnett",
     role: "Project Manager",
     education: "Associates in Computer Science (2024)",
     skills: ["Java", "JavaScript", "Python"],
-    experience:
-      "3 Years being an IT Technician",
+    experience: "3 Years being an IT Technician",
   },
   {
     name: "Beng Duong",
     role: "UI/UX Designer",
     education: "BS in Computer Science (2028)",
-    skills: ["Java", "Python", "HTML", "CSS", "JavaScript", "Swift", "Assembly"],
+    skills: [
+      "Java",
+      "Python",
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Swift",
+      "Assembly",
+    ],
     experience:
       "Caltrans Software Development Student Intern (  September 2025 - Present) | OptionThreeTechLLC Co-Founder & Software Engineer(March  2025 - Present) ",
   },
@@ -32,22 +38,31 @@ const teamMembers = [
     role: "Backend Programmer",
     education: "Sacramento State Computer Science(2028)",
     skills: ["Python", "C", "Java", "Supabase"],
-    experience:
-      "2 years of data science experience and backend development",
+    experience: "2 years of data science experience and backend development",
   },
   {
     name: "Mukhammad Abdusamadov",
     role: "QC",
     education: "Associates in Computer Science (2024)",
     skills: ["C", "C++", "Python", "Assembly"],
-    experience:
-      "2 years in robotics",
+    experience: "2 years in robotics",
   },
   {
     name: "Mohsin Mohammad",
     role: "Programmer",
     education: "Sacramento State University (second year student)",
-    skills: ["Java", "C++", "Python", "SQL", "Assembly", "Data Science & Machine Learning", "HTML", "CSS", "Microsoft 365 fundamentals(involved)", "Microsoft Azure(involved)"],
+    skills: [
+      "Java",
+      "C++",
+      "Python",
+      "SQL",
+      "Assembly",
+      "Data Science & Machine Learning",
+      "HTML",
+      "CSS",
+      "Microsoft 365 fundamentals(involved)",
+      "Microsoft Azure(involved)",
+    ],
     experience:
       "Private Mathematics Tutor (Feb 2021 - Jan 2022), April 18 Hackathon (April 18, 2025)",
   },
@@ -63,23 +78,24 @@ const teamMembers = [
     name: "Sparsh Saraiya",
     role: "Lead Analyst/Lead QC",
     education: "Sacramento State University (junior)",
-    skills: ["Cybersecurity", "Penetration testing", "Threat analysis", "Network security", "Linux administration", "Secure software development"],
+    skills: [
+      "Cybersecurity",
+      "Penetration testing",
+      "Threat analysis",
+      "Network security",
+      "Linux administration",
+      "Secure software development",
+    ],
     experience:
       "Strong background in cybersecurity with experience in security auditing, vulnerability assessment, and secure systems practices. Works as a freelance cybersecurity consultant supporting small organizations with security evaluations and improvements. Recognized by the State of California for biliteracy and certified by CompTIA with Security+.",
   },
-
 ];
 
 export function About() {
   return (
     <div className="space-y-8">
       <div className="text-center space-y-4">
-        <h1 className="text-slate-900">About Our Team</h1>
-        <p className="text-slate-600 max-w-2xl mx-auto">
-          Meet the talented individuals behind Expense Tracker. Our diverse team
-          brings together expertise in development, design, and project
-          management.
-        </p>
+        <h1 className="text-slate-900 text-3xl font-bold">About Our Team</h1>
       </div>
 
       <div className="grid md:grid-cols-2 gap-6">

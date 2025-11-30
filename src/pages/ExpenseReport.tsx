@@ -334,12 +334,7 @@ export function ExpenseReport() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
-          <h1 className="text-slate-900">Expense Report</h1>
-          <p className="text-slate-600">
-            {isAdmin
-              ? "Organization-wide financial overview"
-              : "Visual summaries and analytics of your finances"}
-          </p>
+          <h1 className="text-slate-900 text-3xl font-bold">Expense Report</h1>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">

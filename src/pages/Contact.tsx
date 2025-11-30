@@ -45,11 +45,7 @@ export function Contact() {
   return (
     <div className="space-y-8 max-w-4xl mx-auto">
       <div className="text-center space-y-4">
-        <h1 className="text-slate-900">Contact Us</h1>
-        <p className="text-slate-600">
-          Have questions or feedback? We'd love to hear from you. Fill out the
-          form below and our team will get back to you as soon as possible.
-        </p>
+        <h1 className="text-slate-900 text-3xl font-bold">Contact Us</h1>
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">

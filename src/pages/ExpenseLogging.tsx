@@ -296,10 +296,7 @@ export function ExpenseLogging() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
-          <h1 className="text-slate-900">Expense Logging</h1>
-          <p className="text-slate-600">
-            Add, edit, and delete income and expense entries
-          </p>
+          <h1 className="text-slate-900 text-3xl font-bold">Expense Logging</h1>
         </div>
 
         <div className="flex items-center gap-2">
