@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "../../lib/supabase";
 import { format, parseISO, isValid } from "date-fns";
 import { Database } from "../../types/supabase";
+import { profile } from "console";
 
 // Define the shape manually to satisfy TypeScript
 export type TransactionWithProfile = Database['public']['Tables']['transactions']['Row'] & {
@@ -21,10 +22,22 @@ export function useReports(selectedMonth: string = "Yearly", selectedUser: strin
   const { data: allTransactions, isLoading } = useQuery({
     queryKey: ["all_transactions_report"],
     queryFn: async () => {
-      // A. Fetch Raw Transactions
+      // A. Fetch Raw Transactions (first getting the user, then their profile to get their org ID, then fetch transactions for that org to prevent getting data from other orgs)
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return [];
+
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("organization_id")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile?.organization_id) return [];
+
       const { data: transData, error: transError } = await supabase
         .from("transactions")
         .select("*")
+        .eq("organization_id", profile.organization_id)
         .order('date', { ascending: true });
       
       if (transError) throw transError;
