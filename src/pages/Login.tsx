@@ -12,7 +12,7 @@ import {
   CardFooter,
 } from "../components/ui/card";
 import { Label } from "../components/ui/label";
-import { Loader2, Mail, Lock } from "lucide-react"; // Added icons
+import { Loader2, Mail, Lock } from "lucide-react";
 import { toast } from "sonner";
 
 export function Login() {
@@ -25,18 +25,41 @@ export function Login() {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      // attempt login
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) {
+      if (error) throw error;
+
+      if (data.user) {
+        // after login, immediately check if user is set as inactive/disabled
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("status")
+          .eq("id", data.user.id)
+          .single();
+
+        if (profileError) {
+          console.error("Profile check error:", profileError);
+        }
+
+        // sign user back out if inactive.
+        if (profile?.status === "inactive") {
+          await supabase.auth.signOut();
+          throw new Error("Your account is deactivated. Contact admin.");
+        }
+
+        toast.success("Welcome back!");
+        navigate("/");
+      }
+    } catch (error: any) {
       toast.error(error.message);
-    } else {
-      toast.success("Welcome back!");
-      navigate("/"); // Redirect to landing page
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (

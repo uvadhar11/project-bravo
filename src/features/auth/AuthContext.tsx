@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "../../lib/supabase";
+import { toast } from "sonner";
 
 type AuthContextType = {
   session: Session | null;
@@ -19,11 +20,39 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // check user status - whether they are active or inactive to disable their account
+  const checkUserStatus = async (userId: string) => {
+    const { data: profile, error } = await supabase
+      .from("profiles")
+      .select("status")
+      .eq("id", userId)
+      .single();
+
+    if (error) {
+      console.error("Error checking user status:", error);
+      return;
+    }
+
+    if (profile?.status === "inactive") {
+      await supabase.auth.signOut();
+      setSession(null);
+      setUser(null);
+      toast.error(
+        "Your account has been deactivated. Please contact your administrator."
+      );
+    }
+  };
+
   useEffect(() => {
     // 1. Check active session on mount
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
+
+      // check user status (enabled/disabled account)
+      if (session?.user) {
+        checkUserStatus(session.user.id);
+      }
       setLoading(false);
     });
 
@@ -33,6 +62,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
+
+      // Check status on login or token refresh - whether they are disabled or not
+      if (session?.user) {
+        checkUserStatus(session.user.id);
+      }
+
       setLoading(false);
     });
 
