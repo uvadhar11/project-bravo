@@ -32,7 +32,7 @@ export function useOrganization() {
       };
     },
     retry: false,
-    staleTime: 1000 * 60 * 5, // Cache this for 5 minutes
+    staleTime: 0
   });
 }
 

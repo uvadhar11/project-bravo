@@ -63,7 +63,7 @@ export function useTransactions() {
 
       return combinedData as Transaction[];
     },
-    staleTime: 1000 * 60, // 1 minute cache
+    staleTime: 0,
   });
 
   // --- Mutations (Create/Delete) ---

@@ -67,7 +67,7 @@ export function useReports(selectedMonth: string = "Yearly", selectedUser: strin
 
       return combinedData as TransactionWithProfile[];
     },
-    staleTime: 1000 * 60 * 5
+    staleTime: 0
   });
 
   if (isLoading || !allTransactions) {

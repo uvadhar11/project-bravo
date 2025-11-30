@@ -18,6 +18,6 @@ export function useUserProfile() {
       if (error) throw error;
       return data;
     },
-    staleTime: 1000 * 60 * 5, // Cache profile for 5 mins
+    staleTime: 0,
   });
 }
