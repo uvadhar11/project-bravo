@@ -3,37 +3,71 @@ import { Badge } from "../components/ui/badge";
 import { GraduationCap, Briefcase, Code } from "lucide-react";
 
 const teamMembers = [
-  {
-    name: "John Smith",
-    role: "Lead Developer",
-    education: "BSc Computer Science, State University (2020)",
-    skills: ["React", "TypeScript", "Node.js", "Database Design"],
+    {
+    name: "Umang Vadhar",
+    role: "Lead Programmer",
+    education: "x",
+    skills: ["x", "x", "x", "x"],
     experience:
-      "3 years of full-stack development experience, specializing in financial applications",
+      "x",
   },
   {
-    name: "Sarah Johnson",
-    role: "UI/UX Designer",
-    education: "BA Design & Media, Design Institute (2019)",
-    skills: ["Figma", "User Research", "Wireframing", "Prototyping"],
-    experience:
-      "4 years designing user-centered applications for fintech and e-commerce",
-  },
-  {
-    name: "Michael Chen",
-    role: "Backend Developer",
-    education: "MSc Software Engineering, Tech University (2021)",
-    skills: ["Python", "SQL", "API Development", "Cloud Services"],
-    experience: "5 years building scalable backend systems and RESTful APIs",
-  },
-  {
-    name: "Emily Rodriguez",
+    name: "Alex Barnett",
     role: "Project Manager",
-    education: "MBA Technology Management, Business School (2018)",
-    skills: ["Agile", "Scrum", "Project Planning", "Team Leadership"],
+    education: "Associates in Computer Science (2024)",
+    skills: ["Java", "JavaScript", "Python"],
     experience:
-      "6 years managing cross-functional teams in software development projects",
+      "3 Years being an IT Technician",
   },
+  {
+    name: "Beng Duong",
+    role: "UI/UX Designer",
+    education: "BS in Computer Science (2028)",
+    skills: ["Java", "Python", "HTML", "CSS", "JavaScript", "Swift", "Assembly"],
+    experience:
+      "Caltrans Software Development Student Intern (  September 2025 - Present) | OptionThreeTechLLC Co-Founder & Software Engineer(March  2025 - Present) ",
+  },
+  {
+    name: "Derian Godoy-Chavez",
+    role: "Backend Programmer",
+    education: "Sacramento State Computer Science(2028)",
+    skills: ["Python", "C", "Java", "Supabase"],
+    experience:
+      "2 years of data science experience and backend development",
+  },
+  {
+    name: "Mukhammad Abdusamadov",
+    role: "QC",
+    education: "Associates in Computer Science (2024)",
+    skills: ["C", "C++", "Python", "Assembly"],
+    experience:
+      "2 years in robotics",
+  },
+  {
+    name: "Mohsin Mohammad",
+    role: "Programmer",
+    education: "Sacramento State University (second year student)",
+    skills: ["Java", "C++", "Python", "SQL", "Assembly", "Data Science & Machine Learning", "HTML", "CSS", "Microsoft 365 fundamentals(involved)", "Microsoft Azure(involved)"],
+    experience:
+      "Private Mathematics Tutor (Feb 2021 - Jan 2022), April 18 Hackathon (April 18, 2025)",
+  },
+  {
+    name: "Ronald Salas",
+    role: "Designer",
+    education: "Sacramento State University (second year student)",
+    skills: ["Java", "C++", "Python", "Data & AI: Assembly"],
+    experience:
+      "Bilingual learning and teaching (2017), Napa Valley College Mentor Collective (2023): ",
+  },
+  {
+    name: "Sparsh Saraiya",
+    role: "Lead Analyst/Lead QC",
+    education: "Sacramento State University (junior)",
+    skills: ["Cybersecurity", "Penetration testing", "Threat analysis", "Network security", "Linux administration", "Secure software development"],
+    experience:
+      "Strong background in cybersecurity with experience in security auditing, vulnerability assessment, and secure systems practices. Works as a freelance cybersecurity consultant supporting small organizations with security evaluations and improvements. Recognized by the State of California for biliteracy and certified by CompTIA with Security+.",
+  },
+
 ];
 
 export function About() {
