@@ -89,12 +89,16 @@ export function useProfiles() {
     mutationFn: async (email: string) => {
       if (!org?.id) throw new Error("Organization ID not found. Cannot send invite.");
 
+      // redirect url
+      const redirectUrl = `${window.location.origin}/set-password`;
+
       // Call the Edge Function we created earlier
       const { data, error } = await supabase.functions.invoke('invite-user', {
         body: { 
           email, 
           // orgName: org.name,
-          orgId: org.id 
+          orgId: org.id,
+          redirectTo: redirectUrl, 
         }
       });
 

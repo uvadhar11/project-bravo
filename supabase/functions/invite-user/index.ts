@@ -31,7 +31,8 @@ Deno.serve(async (req) => {
         organization_id: orgId},
         // full_name: "", // add meta data here later
         // organization: orgName || 'Default Org' }, // will want to add the org name as well. Attach metadata to the user
-        redirectTo: 'http://localhost:3000/set-password', // CHANGE this to production URL later
+        redirectTo: redirectTo || 'http://localhost:3000/set-password',
+        // testing: redirectTo: 'http://localhost:3000/set-password', // CHANGE this to production URL later
     })
 
     if (error) throw error
