@@ -17,7 +17,7 @@ export function useOrganization() {
       // Get my profile to find my Org ID and Name
       const { data: profile, error } = await supabase
         .from("profiles")
-        .select("organization_id, organizations(name)")
+        .select("organization_id, organizations(name, join_code)")
         .eq("id", user.id)
         .single();
 
@@ -29,6 +29,7 @@ export function useOrganization() {
       return {
         id: profile?.organization_id,
         name: profile?.organizations?.name, // Join automatically returns an object/array
+        joinCode: profile?.organizations?.join_code,
       };
     },
     retry: false,

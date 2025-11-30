@@ -24,6 +24,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "../components/ui/dialog";
 import {
   Popover,
@@ -39,7 +40,7 @@ import {
   ArrowUpDown,
   ArrowUp,
   ArrowDown,
-} from "lucide-react"; // Import Arrows
+} from "lucide-react";
 import { toast } from "sonner";
 import { useTransactions } from "../features/transactions/useTransactions";
 import { useUserProfile } from "../features/auth/useUserProfile";
@@ -432,6 +433,12 @@ export function ExpenseLogging() {
                 <DialogTitle>
                   {editingEntry ? "Edit Entry" : "Add New Entry"}
                 </DialogTitle>
+                {/* Added DialogDescription for accessibility */}
+                <DialogDescription>
+                  Fill in the details below to{" "}
+                  {editingEntry ? "update the" : "create a new"} transaction
+                  record.
+                </DialogDescription>
               </DialogHeader>
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">

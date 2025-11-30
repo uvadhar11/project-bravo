@@ -157,11 +157,42 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      debug_admin_view: {
+        Row: {
+          org_check: string | null
+          role_check: string | null
+          trans_org_id: string | null
+          transaction_name: string | null
+          user_email: string | null
+          user_org_id: string | null
+          user_role: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_organization_id_fkey"
+            columns: ["user_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_organization_id_fkey"
+            columns: ["trans_org_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       get_my_org_id: { Args: never; Returns: string }
+      get_my_role: { Args: never; Returns: string }
       is_org_admin: { Args: never; Returns: boolean }
+      join_organization: {
+        Args: { join_code_input: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

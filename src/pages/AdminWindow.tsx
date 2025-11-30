@@ -39,10 +39,12 @@ import {
   Search,
   UserPlus,
   Download,
+  Building2,
+  Copy,
 } from "lucide-react";
 import { toast } from "sonner";
 import { exportToCSV } from "../utils/export";
-import { useProfiles } from "../features/admin/useAdmin";
+import { useOrganization, useProfiles } from "../features/admin/useAdmin";
 
 interface User {
   id: string;
@@ -90,6 +92,7 @@ const mockUsers: User[] = [
 
 export function AdminWindow() {
   const { profiles, isLoading, toggleStatus, inviteUser } = useProfiles();
+  const { data: org } = useOrganization(); // Get Org Details including Join Code
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddUserOpen, setIsAddUserOpen] = useState(false);
   const [newUserEmail, setNewUserEmail] = useState("");
@@ -128,6 +131,13 @@ export function AdminWindow() {
     });
   };
 
+  const copyJoinCode = () => {
+    if (org?.joinCode) {
+      navigator.clipboard.writeText(org.joinCode);
+      toast.success("Join code copied to clipboard");
+    }
+  };
+
   const handleExportReport = (reportType: string) => {
     // In a real app, you'd likely fetch specific data for the report here.
     // For now, we can export the current users list as an example
@@ -141,6 +151,43 @@ export function AdminWindow() {
   return (
     <div className="space-y-6">
       {/* ... Title Section ... */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h1 className="text-slate-900 text-3xl font-bold">Admin Dashboard</h1>
+          <p className="text-slate-600">Manage your organization and users</p>
+        </div>
+
+        {/* Organization Card with Join Code */}
+        {org && (
+          <Card className="flex items-center gap-4 p-3 bg-blue-50 border-blue-100">
+            <div className="p-2 bg-white rounded-full shadow-sm">
+              <Building2 className="w-5 h-5 text-blue-600" />
+            </div>
+            <div className="space-y-0.5">
+              <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+                Organization
+              </p>
+              <p className="text-sm font-bold text-slate-900">{org.name}</p>
+            </div>
+            <div className="h-8 w-px bg-blue-200 mx-2" />
+            <div className="space-y-0.5">
+              <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+                Join Code
+              </p>
+              <div
+                className="flex items-center gap-2 cursor-pointer group"
+                onClick={copyJoinCode}
+                title="Click to copy"
+              >
+                <code className="text-lg font-mono font-bold text-blue-700">
+                  {org.joinCode || "Loading..."}
+                </code>
+                <Copy className="w-3 h-3 text-slate-400 group-hover:text-blue-600 transition-colors" />
+              </div>
+            </div>
+          </Card>
+        )}
+      </div>
 
       {/* Stats Cards (Dynamic) */}
       <div className="grid md:grid-cols-3 gap-6">
@@ -157,10 +204,27 @@ export function AdminWindow() {
           </p>
         </Card>
         {/* ... Other cards ... */}
+        <Card className="p-6 space-y-2">
+          <div className="flex items-center justify-between">
+            <p className="text-slate-600">Organization Information</p>
+            <Users className="w-5 h-5 text-blue-600" />
+          </div>
+          <p className="text-slate-900 text-2xl font-bold">
+            {profiles?.length}
+          </p>
+          <p className="text-slate-600 text-sm">
+            {profiles?.filter((u) => u.status === "active").length} active
+          </p>
+        </Card>
       </div>
 
       <Tabs defaultValue="users" className="space-y-6">
         {/* ... TabsList ... */}
+        <TabsList>
+          <TabsTrigger value="users">Users</TabsTrigger>
+          <TabsTrigger value="entries">Entries</TabsTrigger>
+          <TabsTrigger value="reports">Reports</TabsTrigger>
+        </TabsList>
 
         <TabsContent value="users" className="space-y-4">
           <div className="flex items-center justify-between gap-4">
