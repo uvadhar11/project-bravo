@@ -57,7 +57,7 @@ export default function Header() {
             {/*  Logo */}
             <Link to="/" className="flex items-center gap-3 group">
               <img
-                src="public/logo.png"
+                src="/logo.png"
                 alt="Project Bravo Logo"
                 className="w-8 h-8 rounded-full object-cover shadow-sm group-hover:opacity-90 transition-opacity"
               />
