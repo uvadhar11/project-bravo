@@ -99,8 +99,8 @@ export function AdminWindow() {
   const { transactions } = useTransactions(); // get transactions
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [isAddUserOpen, setIsAddUserOpen] = useState(false);
-  const [newUserEmail, setNewUserEmail] = useState("");
+  // const [isAddUserOpen, setIsAddUserOpen] = useState(false);
+  // const [newUserEmail, setNewUserEmail] = useState("");
 
   if (isLoading) return <div>Loading Admin Dashboard...</div>;
 
@@ -138,17 +138,17 @@ export function AdminWindow() {
     );
   };
 
-  const handleInvite = (e: React.FormEvent) => {
-    e.preventDefault();
-    // In a real app, this would call the Edge Function
-    inviteUser.mutate(newUserEmail, {
-      onSuccess: () => {
-        toast.success(`Invite sent to ${newUserEmail}`);
-        setIsAddUserOpen(false);
-        setNewUserEmail("");
-      },
-    });
-  };
+  // for adding user via email invite
+  // const handleInvite = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   inviteUser.mutate(newUserEmail, {
+  //     onSuccess: () => {
+  //       toast.success(`Invite sent to ${newUserEmail}`);
+  //       setIsAddUserOpen(false);
+  //       setNewUserEmail("");
+  //     },
+  //   });
+  // };
 
   const copyJoinCode = () => {
     if (org?.joinCode) {
@@ -158,8 +158,6 @@ export function AdminWindow() {
   };
 
   const handleExportReport = (reportType: string) => {
-    // In a real app, you'd likely fetch specific data for the report here.
-    // For now, we can export the current users list as an example
     if (reportType === "User Activity" && filteredUsers) {
       exportToCSV(filteredUsers, "user_activity_report");
     } else {
@@ -271,7 +269,8 @@ export function AdminWindow() {
                 className="pl-10"
               />
             </div>
-            <Dialog open={isAddUserOpen} onOpenChange={setIsAddUserOpen}>
+            {/* functionality for invite user with email */}
+            {/* <Dialog open={isAddUserOpen} onOpenChange={setIsAddUserOpen}>
               <DialogTrigger asChild>
                 <Button className="gap-2">
                   <UserPlus className="w-4 h-4" />
@@ -298,7 +297,7 @@ export function AdminWindow() {
                   </Button>
                 </form>
               </DialogContent>
-            </Dialog>
+            </Dialog> */}
           </div>
 
           <Card>

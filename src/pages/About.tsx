@@ -6,9 +6,10 @@ const teamMembers = [
   {
     name: "Umang Vadhar",
     role: "Lead Programmer",
-    education: "x",
-    skills: ["x", "x", "x", "x"],
-    experience: "x",
+    education: "BS in Computer Science (Sophomore)",
+    skills: ["TypeScript", "HTML", "CSS", "React.js", "Node.js", "Supabase"],
+    experience:
+      "6 years of full stack experience, SWE intern at SMUD, OptionThreeTechLLC Founder",
   },
   {
     name: "Alex Barnett",

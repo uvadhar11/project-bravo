@@ -5,7 +5,13 @@ const contributions = [
   {
     name: "Umang Vadhar",
     role: "Lead Programmer",
-    contributions: ["x", "x", "x", "x"],
+    contributions: [
+      "Designed the database, code architecture, and edge functions",
+      "Developed the frontend and backend code for the website and integrated the two together with Supabase DB and Auth",
+      "Led the programming team",
+      "Reviewed design, testing, and documentation",
+    ],
+    image: "/team/umang.jpeg",
   },
   {
     name: "Alex Barnett",
@@ -24,7 +30,7 @@ const contributions = [
     role: "UI/UX Designer",
     contributions: [
       "Created the full website wireframe, outlining the structure and user flow.",
-      "Designed and coded the front-end for all pages, including layout, styling, and user interface elements.",
+      "Designed and coded the front-end including layout, styling, and user interface elements.",
       "Reviewed all project documentation before submission to ensure accuracy and completeness.",
       "Assisted in testing and refining the website to ensure proper functionality and usability.",
     ],
