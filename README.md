@@ -1,10 +1,10 @@
-# TO DO: REWRITE THIS WITH INSTRUCTIONS FOR THE PROJECT
+## LIVE DEPLOYED LINK - test out the website here
 
-# Wireframe for Expense Tracker
+https://project-bravo.netlify.app/
 
-This is a code bundle for Wireframe for Expense Tracker. The original project is available at https://www.figma.com/design/tN782e7i65yirlKjhT09Nq/Wireframe-for-Expense-Tracker.
+## RUNNING THE CODE
 
-## Running the code
+# In the ZIP file we turned in to you on canvas, we provided the .env file with the environment variables, so you can just run the following commands to run the site locally:
 
 Run `npm i` to install the dependencies.
 
