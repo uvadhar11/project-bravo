@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Card } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
@@ -6,8 +6,11 @@ import { Button } from "../components/ui/button";
 import { Label } from "../components/ui/label";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { toast } from "sonner";
+import emailjs from "@emailjs/browser";
 
 export function Contact() {
+  const formRef = useRef<HTMLFormElement>(null);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,22 +18,43 @@ export function Contact() {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
 
-    // Simulate sending to team emails
-    console.log("Form submitted:", formData);
-    toast.success(
-      "Message sent successfully! Our team will get back to you soon."
-    );
+    try {
+      const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      message: "",
-    });
+      if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+        toast.error("Missing email.js envs");
+      } else {
+        // everything is good so send the email
+        await emailjs.sendForm(
+          SERVICE_ID,
+          TEMPLATE_ID,
+          formRef.current!,
+          PUBLIC_KEY
+        );
+        toast.success(
+          "Message sent successfully! The team will contact you soon."
+        );
+      }
+
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
+    } catch (error: any) {
+      console.error("Email Error:", error);
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (
@@ -54,7 +78,7 @@ export function Contact() {
             <Mail className="w-6 h-6 text-blue-600" />
           </div>
           <h3 className="text-slate-900">Email</h3>
-          <p className="text-slate-600">team@expensetracker.com</p>
+          <p className="text-slate-600">bravotracker2@gmail.com</p>
         </Card>
 
         <Card className="p-6 space-y-3 text-center">
@@ -62,7 +86,7 @@ export function Contact() {
             <Phone className="w-6 h-6 text-green-600" />
           </div>
           <h3 className="text-slate-900">Phone</h3>
-          <p className="text-slate-600">+1 (555) 123-4567</p>
+          <p className="text-slate-600">+1 (279) 977-8354</p>
         </Card>
 
         <Card className="p-6 space-y-3 text-center">
@@ -70,12 +94,12 @@ export function Contact() {
             <MapPin className="w-6 h-6 text-purple-600" />
           </div>
           <h3 className="text-slate-900">Location</h3>
-          <p className="text-slate-600">Tech City, TC 12345</p>
+          <p className="text-slate-600">Sacramento, CA</p>
         </Card>
       </div>
 
       <Card className="p-8">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="name">Name *</Label>
